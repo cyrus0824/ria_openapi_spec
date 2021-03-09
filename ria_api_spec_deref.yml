@@ -25,9 +25,9 @@ paths:
                   health:
                     type: string
                     description: OK if service is healthy
-        '4xx':
+        '4XX':
           description: Unexpected client error
-        '5xx':
+        '5XX':
           description: Unexpected server error
   /TBorNotTB:
     post:
@@ -68,7 +68,7 @@ paths:
                     description: Classification of the uploaded image as either TB or NOT_TB
         '429':
           description: Throttled for excessive request rate
-        '5xx':
+        '5XX':
           description: Unexpected server error
   '/test_api/add/{x}/{y}':
     get:
@@ -95,7 +95,5 @@ paths:
             text/plain:
               schema:
                 type: string
-        '429':
-          description: Throttled for excessive request rate
-        '5xx':
+        '5XX':
           description: Unexpected server error

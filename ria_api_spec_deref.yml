@@ -1,0 +1,101 @@
+openapi: 3.0.0
+info:
+  title: TBPortals Radiomics Image Analysis API
+  description: Radiomics Image Analysis API
+  version: 0.0.1
+servers:
+  - url: 'https://ria.tbportals.niaid.nih.gov'
+    description: Production API
+  - url: 'https://ria.niaidawsqa.net'
+    description: QA API (requires NIH VPN access)
+  - url: 'https://ria.niaidawsdev.net'
+    description: Dev API (requires NIH VPN access)
+paths:
+  /health_check:
+    get:
+      description: Health check for service
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  health:
+                    type: string
+                    description: OK if service is healthy
+        4xx:
+          description: Unexpected client error
+        5xx:
+          description: Unexpected server error
+  /TBorNotTB:
+    post:
+      description: Initiate a TB or not TB prediction on image in request payload
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                method:
+                  type: string
+                  description: 'Type of TB or not TB prediction method used - either best method, or ensemble methods are currently supported'
+                  enum:
+                    - best
+                    - ensemble
+                file:
+                  type: string
+                  description: The image to be analyzed
+                  format: binary
+      responses:
+        '200':
+          description: Successful request response containing a prediction of TB or not TB
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  file_name:
+                    type: string
+                    description: File name of the image that was used to create TB prediction
+                  probability_of_TB:
+                    type: number
+                    description: Probability that the uploaded image is from a patient with TB
+                  decision:
+                    type: string
+                    description: Classification of the uploaded image as either TB or NOT_TB
+        '429':
+          description: Throttled for excessive request rate
+        5xx:
+          description: Unexpected server error
+  '/test_api/add/{x}/{y}':
+    get:
+      description: Initiate a simple integer add job
+      parameters:
+        - in: path
+          name: x
+          description: The augend
+          schema:
+            type: integer
+            example: 7
+          required: true
+        - in: path
+          name: 'y'
+          description: The addend
+          schema:
+            type: integer
+            example: 6
+          required: true
+      responses:
+        '200':
+          description: Successful request response containing the summand
+          content:
+            text/plain:
+              schema:
+                type: string
+        '429':
+          description: Throttled for excessive request rate
+        5xx:
+          description: Unexpected server error

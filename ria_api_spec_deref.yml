@@ -4,18 +4,18 @@ info:
   description: Radiomics Image Analysis API
   version: 0.0.1
 servers:
-  - url: 'https://ria.tbportals.niaid.nih.gov'
+  - url: https://ria.tbportals.niaid.nih.gov
     description: Production API
-  - url: 'https://ria.niaidawsqa.net'
+  - url: https://ria.niaidawsqa.net
     description: QA API (requires NIH VPN access)
-  - url: 'https://ria.niaidawsdev.net'
+  - url: https://ria.niaidawsdev.net
     description: Dev API (requires NIH VPN access)
 paths:
   /health_check:
     get:
       description: Health check for service
       responses:
-        '200':
+        "200":
           description: Service is healthy
           content:
             application/json:
@@ -25,9 +25,9 @@ paths:
                   health:
                     type: string
                     description: OK if service is healthy
-        '4XX':
+        4XX:
           description: Unexpected client error
-        '5XX':
+        5XX:
           description: Unexpected server error
   /TBorNotTB:
     post:
@@ -41,7 +41,8 @@ paths:
               properties:
                 method:
                   type: string
-                  description: 'Type of TB or not TB prediction method used - either best method, or ensemble methods are currently supported'
+                  description: Type of TB or not TB prediction method used - either best method,
+                    or ensemble methods are currently supported
                   enum:
                     - best
                     - ensemble
@@ -50,7 +51,7 @@ paths:
                   description: The image to be analyzed
                   format: binary
       responses:
-        '200':
+        "200":
           description: Successful request response containing a prediction of TB or not TB
           content:
             application/json:
@@ -66,11 +67,11 @@ paths:
                   decision:
                     type: string
                     description: Classification of the uploaded image as either TB or NOT_TB
-        '429':
+        "429":
           description: Throttled for excessive request rate
-        '5XX':
+        5XX:
           description: Unexpected server error
-  '/test_api/add/{x}/{y}':
+  "/test_api/add/{x}/{y}":
     get:
       description: Initiate a simple integer add job
       parameters:
@@ -82,18 +83,46 @@ paths:
             example: 7
           required: true
         - in: path
-          name: 'y'
+          name: y
           description: The addend
           schema:
             type: integer
             example: 6
           required: true
       responses:
-        '200':
+        "200":
           description: Successful request response containing the summand
           content:
             text/plain:
               schema:
                 type: string
-        '5XX':
+        5XX:
           description: Unexpected server error
+components:
+  schemas:
+    TBorNotTBRequest:
+      type: object
+      properties:
+        method:
+          type: string
+          description: Type of TB or not TB prediction method used - either best method,
+            or ensemble methods are currently supported
+          enum:
+            - best
+            - ensemble
+        file:
+          type: string
+          description: The image to be analyzed
+          format: binary
+    TBorNotTBResponse:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: File name of the image that was used to create TB prediction
+        probability_of_TB:
+          type: number
+          description: Probability that the uploaded image is from a patient with TB
+        decision:
+          type: string
+          description: Classification of the uploaded image as either TB or NOT_TB

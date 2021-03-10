@@ -31,6 +31,9 @@ paths:
           description: Unexpected server error
   /TBorNotTB:
     post:
+      tags:
+        - TB or not TB
+      summary: Predict if a CXR image is from a patient with TB
       description: Initiate a TB or not TB prediction on image in request payload
       requestBody:
         required: true
@@ -73,6 +76,9 @@ paths:
           description: Unexpected server error
   "/test_api/add/{x}/{y}":
     get:
+      tags:
+        - test_api
+      summary: Testing API
       description: Initiate a simple integer add job
       parameters:
         - in: path

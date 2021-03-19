@@ -34,7 +34,8 @@ paths:
       tags:
         - TB or not TB
       summary: Predict if a CXR image is from a patient with TB
-      description: Initiate a TB or not TB prediction on image in request payload
+      description: Initiate a TB or not TB prediction on image (either in the request
+        payload, or specified by a URL)
       requestBody:
         required: true
         content:
@@ -49,10 +50,41 @@ paths:
                   enum:
                     - best
                     - ensemble
+                prediction_threshold:
+                  type: number
+                  format: float
+                  minimum: 0
+                  maximum: 1
+                  description: Probability threshold above which image is predicted to represent a
+                    patient with TB
                 file:
                   type: string
                   description: The image to be analyzed
                   format: binary
+              encoding:
+                file:
+                  contentType: application/dicom, image/jpg
+          application/json:
+            schema:
+              type: object
+              properties:
+                method:
+                  type: string
+                  description: Type of TB or not TB prediction method used - either best method,
+                    or ensemble methods are currently supported
+                  enum:
+                    - best
+                    - ensemble
+                prediction_threshold:
+                  type: number
+                  format: float
+                  minimum: 0
+                  maximum: 1
+                  description: Probability threshold above which image is predicted to represent a
+                    patient with TB
+                url:
+                  type: string
+                  description: URL pointing to image file to be analyzed
       responses:
         "200":
           description: Successful request response containing a prediction of TB or not TB
@@ -106,7 +138,7 @@ paths:
           description: Unexpected server error
 components:
   schemas:
-    TBorNotTBRequest:
+    TBorNotTBFileUploadRequest:
       type: object
       properties:
         method:
@@ -116,10 +148,40 @@ components:
           enum:
             - best
             - ensemble
+        prediction_threshold:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Probability threshold above which image is predicted to represent a
+            patient with TB
         file:
           type: string
           description: The image to be analyzed
           format: binary
+      encoding:
+        file:
+          contentType: application/dicom, image/jpg
+    TBorNotTBURLRequest:
+      type: object
+      properties:
+        method:
+          type: string
+          description: Type of TB or not TB prediction method used - either best method,
+            or ensemble methods are currently supported
+          enum:
+            - best
+            - ensemble
+        prediction_threshold:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Probability threshold above which image is predicted to represent a
+            patient with TB
+        url:
+          type: string
+          description: URL pointing to image file to be analyzed
     TBorNotTBResponse:
       type: object
       properties:

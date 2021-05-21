@@ -50,12 +50,12 @@ paths:
                   enum:
                     - best
                     - ensemble
-                file:
+                image:
                   type: string
                   description: The image to be analyzed
                   format: binary
               encoding:
-                file:
+                image:
                   contentType: application/dicom, image/jpg, image/png
           application/json:
             schema:
@@ -141,12 +141,12 @@ components:
           enum:
             - best
             - ensemble
-        file:
+        image:
           type: string
           description: The image to be analyzed
           format: binary
       encoding:
-        file:
+        image:
           contentType: application/dicom, image/jpg, image/png
     TBorNotTBURLRequest:
       type: object

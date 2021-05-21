@@ -50,20 +50,13 @@ paths:
                   enum:
                     - best
                     - ensemble
-                prediction_threshold:
-                  type: number
-                  format: float
-                  minimum: 0
-                  maximum: 1
-                  description: Probability threshold above which image is predicted to represent a
-                    patient with TB
                 file:
                   type: string
                   description: The image to be analyzed
                   format: binary
               encoding:
                 file:
-                  contentType: application/dicom, image/jpg
+                  contentType: application/dicom, image/jpg, image/png
           application/json:
             schema:
               type: object
@@ -75,13 +68,6 @@ paths:
                   enum:
                     - best
                     - ensemble
-                prediction_threshold:
-                  type: number
-                  format: float
-                  minimum: 0
-                  maximum: 1
-                  description: Probability threshold above which image is predicted to represent a
-                    patient with TB
                 url:
                   type: string
                   description: URL pointing to image file to be analyzed
@@ -102,6 +88,13 @@ paths:
                   decision:
                     type: string
                     description: Classification of the uploaded image as either TB or NOT_TB
+                  computation_time:
+                    type: number
+                    description: The time in seconds for the computation, not including queue time.
+                  wall_time:
+                    type: number
+                    description: The total time in seconds for the requests, including job queue
+                      time and computation.
         "429":
           description: Throttled for excessive request rate
         5XX:
@@ -148,20 +141,13 @@ components:
           enum:
             - best
             - ensemble
-        prediction_threshold:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-          description: Probability threshold above which image is predicted to represent a
-            patient with TB
         file:
           type: string
           description: The image to be analyzed
           format: binary
       encoding:
         file:
-          contentType: application/dicom, image/jpg
+          contentType: application/dicom, image/jpg, image/png
     TBorNotTBURLRequest:
       type: object
       properties:
@@ -172,13 +158,6 @@ components:
           enum:
             - best
             - ensemble
-        prediction_threshold:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-          description: Probability threshold above which image is predicted to represent a
-            patient with TB
         url:
           type: string
           description: URL pointing to image file to be analyzed
@@ -194,3 +173,10 @@ components:
         decision:
           type: string
           description: Classification of the uploaded image as either TB or NOT_TB
+        computation_time:
+          type: number
+          description: The time in seconds for the computation, not including queue time.
+        wall_time:
+          type: number
+          description: The total time in seconds for the requests, including job queue
+            time and computation.
